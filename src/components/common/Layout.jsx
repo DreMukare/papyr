@@ -3,8 +3,8 @@ import { Outlet } from "react-router-dom";
 
 const Layout = () => {
   return (
-    <div className="h-max w-max">
-      <div className="px-10">
+    <div className="min-h-screen h-screen w-screen">
+      <div className="px-10 h-full w-10/12 mx-auto">
         <Outlet />
       </div>
     </div>
