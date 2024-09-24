@@ -1,15 +1,29 @@
 import { useForm } from "react-hook-form";
 import TextInput from "./TextInput";
 import Button from "../common/Button";
+import { useNavigate } from "react-router-dom";
+import { login } from "../../services/FirebaseService";
 
 const LoginForm = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const navigate = useNavigate();
+
+  const onSubmit = (data) => {
+    const isLoggedIn = login(data.email, data.password);
+    if (isLoggedIn) {
+      reset();
+      navigate("/");
+    } else {
+      alert("Login failed, please try again");
+      reset();
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-5/12">
@@ -18,17 +32,17 @@ const LoginForm = () => {
         placeHolder="Enter your email"
         isRequired={true}
         type="email"
-        name="Email"
+        name="email"
       />
-      {/* {errors.email && <span>Email required</span>} */}
+      {errors.email && <span>Email required</span>}
       <TextInput
         register={register}
         placeHolder="Enter your password"
         isRequired={true}
         type="password"
-        name="Password"
+        name="password"
       />
-      {/* {errors.email && <span>Password required</span>} */}
+      {errors.password && <span>Password required</span>}
       <Button
         moreStyles="mt-5"
         type="submit"
